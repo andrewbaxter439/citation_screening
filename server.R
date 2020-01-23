@@ -67,7 +67,7 @@ output$search <- renderText(search_text())
 search_done <- reactiveVal("")
 
 search_result <- eventReactive(input$wok_search, {
-  results <- scopus_search(search_text()) 
+  results <- scopus_search(search_text(), count = 1) 
   results$entries[[1]]
 })
 

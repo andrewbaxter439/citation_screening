@@ -5,7 +5,7 @@ library(shiny)
 shinyUI(fluidPage(
     tags$head(tags$style(HTML(
         ".boxsection {
-        border-radius: 10px;
+             border-radius: 10px;
              margin: 10px;
              background-color: #eeeeee;
              padding: 10px;
@@ -30,11 +30,6 @@ shinyUI(fluidPage(
            fluidRow(class = "boxsection",
                     style = "min-height: 315px",
                     uiOutput("resettable_inputs")
-                    # textInput("authors", "Authors:"),
-                    # textInput("title", "Title:"),
-                    # textInput("url", "url:"),
-                    # div(style="display: inline-block;vertical-align:top;", radioButtons("type", "Citation type:", choices = c("Journal article", "News report", "Government/official report", "Other:"), inline = TRUE)),
-                    # div(style="display: inline-block;vertical-align:top;", textInput("othertype", "", width = "150px"))
            ),
            fluidRow(class = "boxsection",
                     h4("Action:"),
