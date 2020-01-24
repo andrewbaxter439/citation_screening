@@ -89,6 +89,23 @@ observeEvent(input$write,
   {
     session$sendCustomMessage(type = 'testmessage', message = 'done')
     
+    if (!is.null(search_result()$error)) {
+      
+      rec() %>% 
+        mutate(
+          title = input$title,
+          au1 = input$authors,
+          url = input$url %>% str_remove_all("( |\n|\r)"),
+          type = ifelse(input$type == "Other:", input$othertype, input$type),
+          maybe = 0
+        ) %>% 
+        gs_add_row(sheet, ws = "complete", input = .)
+      newval <- incr() + 1
+      incr(newval)
+      search_done("")
+      
+    } else {
+    
       rec() %>% 
         mutate(
           title = search_result()$`dc:title`,
@@ -104,6 +121,7 @@ observeEvent(input$write,
       newval <- incr() + 1
       incr(newval)
       search_done("")
+    }
   })
 
 observeEvent(input$asis,
@@ -143,14 +161,14 @@ observeEvent(input$maybe,
 
 prog_df <- reactive({
   
-  done <- nrow(complete) + incr() -1
-  rem <- nrow(full_df) - done
+  done <-       min(max(nrow(complete) + incr() -1, nrow(complete)), nrow(full_df))
+  rem <-        nrow(full_df) - done
   
-  done_rank1 <- nrow(complete %>% filter(nrefs>2)) + incr() -1
-  rem_rank1 <- nrow(full_df %>% filter(nrefs>2)) - done_rank1
+  done_rank1 <- min(max(nrow(complete %>% filter(nrefs>2)) + incr() -1, nrow(complete %>% filter(nrefs>2))), nrow(full_df %>% filter(nrefs>2)))
+  rem_rank1 <-  nrow(full_df %>% filter(nrefs>2)) - done_rank1
   
-  done_rank2 <- nrow(complete %>% filter(nrefs>1)) + incr() -1
-  rem_rank2 <- nrow(full_df %>% filter(nrefs>1)) - done_rank2
+  done_rank2 <- min(max(nrow(complete %>% filter(nrefs>1)) + incr() -1, nrow(complete %>% filter(nrefs>1))), nrow(full_df %>% filter(nrefs>1)))
+  rem_rank2 <-  nrow(full_df %>% filter(nrefs>1)) - done_rank2
   
   
 tibble(
@@ -176,4 +194,13 @@ output$prog_graph <- renderPlot({
     scale_fill_sphsu()
 })
 
+
+# temp table --------------------------------------------------------------
+
+output$prog_tab <- renderDataTable({
+  prog_df() %>% 
+    spread(count, n) %>% 
+    select(References = group, Done = done, Remaining = rem) %>% 
+    arrange(Remaining)
+  }, options = list(searching = FALSE, paging = FALSE, info = FALSE))
 })
