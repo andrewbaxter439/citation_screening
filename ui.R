@@ -13,6 +13,10 @@ shinyUI(fluidPage(
              background-color: #adcfeb;
              padding: 10px;
              overflow-wrap: break-word;
+        }
+        ::selection {
+        background: #FF00CC;
+        color: #FFFFFF
         }'
     )),
     tags$script(HTML("
