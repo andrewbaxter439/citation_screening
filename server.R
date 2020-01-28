@@ -19,9 +19,9 @@ output$resettable_inputs <- renderUI({
   times <- input$write + input$asis + input$maybe
   
   div(id=letters[(times %% length(letters)) + 1],
-  textInput("authors", "Authors:"),
-  textInput("title", "Title:"),
-  textInput("url", "url:"),
+  textInput("authors", "Authors (a):"),
+  textInput("title", "Title (t):"),
+  textInput("url", "url (u):"),
   div(style="display: inline-block;vertical-align:top;", radioButtons("type", "Citation type:", choices = c("Journal article", "News report", "Government/official report", "Other:"), inline = TRUE)),
   div(style="display: inline-block;vertical-align:top;", textInput("othertype", "", width = "150px")))
 })

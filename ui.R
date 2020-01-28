@@ -14,7 +14,29 @@ shinyUI(fluidPage(
              padding: 10px;
              overflow-wrap: break-word;
         }'
-    ))),
+    )),
+    tags$script(HTML("
+            document.onkeydown = getSelectionText;
+        
+        
+        function getSelectionText() {
+            var e = e || window.event;  
+            var s = String.fromCharCode(e.keyCode);
+            if (s == 'A') {
+                var text = document.getElementById('authors');
+                Shiny.setInputValue('authors', window.getSelection().toString());
+            } else if (s == 'T') {
+                var text = document.getElementById('title');
+                Shiny.setInputValue('title', window.getSelection().toString());
+            } else if (s == 'U') {
+                var text = document.getElementById('url');
+                Shiny.setInputValue('url', window.getSelection().toString());
+            }
+            
+            text.value = window.getSelection().toString();
+            
+        }
+    "))),
     tags$head(tags$script(src = "message-handler.js")),
     
     # Sidebar with a slider input for number of bins
