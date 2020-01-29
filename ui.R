@@ -20,13 +20,19 @@ shinyUI(fluidPage(
         }'
     )),
     tags$script(HTML("
+    
             document.onkeydown = getSelectionText;
         
         
         function getSelectionText() {
             var e = e || window.event;  
             var s = String.fromCharCode(e.keyCode);
-            if (s == 'A') {
+            
+                 if(e.keyCode == 13){
+                    document.getElementById('wok_search').click();
+                  } else if (window.getSelection().toString() == '') {
+                var text = '';
+            } else if (s == 'A') {
                 var text = document.getElementById('authors');
                 Shiny.setInputValue('authors', window.getSelection().toString());
             } else if (s == 'T') {
