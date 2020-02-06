@@ -197,10 +197,10 @@ output$prog_graph <- renderPlot({
 
 # temp table --------------------------------------------------------------
 
-output$prog_tab <- renderDataTable({
+output$prog_tab <- DT::renderDataTable({
   prog_df() %>% 
     spread(count, n) %>% 
     select(References = group, Done = done, Remaining = rem) %>% 
     arrange(Remaining)
-  }, options = list(searching = FALSE, paging = FALSE, info = FALSE))
+  }, options = list(searching = FALSE, paging = FALSE, info = FALSE), rownames = FALSE)
 })

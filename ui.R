@@ -99,7 +99,7 @@ shinyUI(fluidPage(
     column(4,
            h3("Progress"),
            plotOutput("prog_graph", height = "100px"),
-           dataTableOutput("prog_tab")
+           DT::dataTableOutput("prog_tab")
            )
 )
 )
