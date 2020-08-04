@@ -1,7 +1,7 @@
 library(shiny)
 library(readr)
 library(dplyr)
-library(googlesheets)
+library(googlesheets4)
 library(httr)
 library(rscopus)
 library(stringr)
@@ -28,13 +28,13 @@ output$resettable_inputs <- renderUI({
 
 # full_df <- read_csv("data/Screen_input.csv", col_types = cols("dir" = "c", "nrefs" = "i"))
 
-sheet <- gs_title("Ongoing results screening")
+sheet <- "https://docs.google.com/spreadsheets/d/1boszwpnoQ-2stzg396kcM7eh0fibB2oA_voZEVw-rWs"
 
-full_df <- gs_read(sheet, ws = "Updated confs")
+full_df <- read_sheet(sheet, sheet = "Updated confs")
 
-progress <- gs_read(sheet, ws = "Progress")
+progress <- read_sheet(sheet, sheet = "Progress")
 
-complete <- gs_read(sheet, ws = "complete", col_types = cols("dir" = "c", "nrefs" = "i", "url" = "c"))
+complete <- read_sheet(sheet, sheet = "complete")
 
 todo <- full_df %>% 
   filter(!(Reference %in% complete$Reference))
@@ -100,7 +100,7 @@ observeEvent(input$write,
           type = ifelse(input$type == "Other:", input$othertype, input$type),
           maybe = 0
         ) %>% 
-        gs_add_row(sheet, ws = "complete", input = .)
+        sheet_append(sheet, sheet = "complete", data = .)
       newval <- incr() + 1
       incr(newval)
       search_done("")
@@ -118,7 +118,7 @@ observeEvent(input$write,
           type = ifelse(input$type == "Other:", input$othertype, input$type),
           maybe = 0
         ) %>% 
-        gs_add_row(sheet, ws = "complete", input = .)
+        sheet_append(sheet, sheet = "complete", data = .)
       newval <- incr() + 1
       incr(newval)
       search_done("")
@@ -135,7 +135,7 @@ observeEvent(input$asis,
           type = ifelse(input$type == "Other:", input$othertype, input$type),
           maybe = 0
         ) %>% 
-        gs_add_row(sheet, ws = "complete", input = .)
+    sheet_append(sheet, sheet = "complete", data = .)
       newval <- incr() + 1
       incr(newval)
       search_done("")
@@ -151,7 +151,7 @@ observeEvent(input$maybe,
           type = ifelse(input$type == "Other:", input$othertype, input$type),
           maybe = 1
         ) %>% 
-        gs_add_row(sheet, ws = "complete", input = .)
+    sheet_append(sheet, sheet = "complete", data = .)
       newval <- incr() + 1
       incr(newval)
       search_done("")
