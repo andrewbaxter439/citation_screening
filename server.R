@@ -26,9 +26,11 @@ output$resettable_inputs <- renderUI({
 })
 # reading in data ---------------------------------------------------------
 
-full_df <- read_csv("data/Screen_input.csv", col_types = cols("dir" = "c", "nrefs" = "i"))
+# full_df <- read_csv("data/Screen_input.csv", col_types = cols("dir" = "c", "nrefs" = "i"))
 
 sheet <- gs_title("Ongoing results screening")
+
+full_df <- gs_read(sheet, ws = "Updated confs")
 
 progress <- gs_read(sheet, ws = "Progress")
 
