@@ -162,13 +162,14 @@ observeEvent(input$maybe,
 
 prog_df <- reactive({
   
-  done <-       min(max(nrow(complete) + incr() -1, nrow(complete)), nrow(full_df))
+  # done <-       nrow(complete %>% inner_join(full_df, by = "Reference"))
+  done <-       min(max(nrow(complete %>% inner_join(full_df, by = "Reference")) + incr() -1, nrow(complete %>% inner_join(full_df, by = "Reference"))), nrow(full_df))
   rem <-        nrow(full_df) - done
   
-  done_rank1 <- min(max(nrow(complete %>% filter(nrefs>2)) + incr() -1, nrow(complete %>% filter(nrefs>2))), nrow(full_df %>% filter(nrefs>2)))
+  done_rank1 <- min(max(nrow(complete %>% filter(nrefs>2) %>% inner_join(full_df, by = "Reference")) + incr() -1, nrow(complete %>% filter(nrefs>2) %>% inner_join(full_df, by = "Reference"))), nrow(full_df %>% filter(nrefs>2)))
   rem_rank1 <-  nrow(full_df %>% filter(nrefs>2)) - done_rank1
   
-  done_rank2 <- min(max(nrow(complete %>% filter(nrefs>1)) + incr() -1, nrow(complete %>% filter(nrefs>1))), nrow(full_df %>% filter(nrefs>1)))
+  done_rank2 <- min(max(nrow(complete %>% filter(nrefs>1) %>% inner_join(full_df, by = "Reference")) + incr() -1, nrow(complete %>% filter(nrefs>1) %>% inner_join(full_df, by = "Reference"))), nrow(full_df %>% filter(nrefs>1)))
   rem_rank2 <-  nrow(full_df %>% filter(nrefs>1)) - done_rank2
   
   
