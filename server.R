@@ -26,10 +26,8 @@ output$resettable_inputs <- renderUI({
 })
 # reading in data ---------------------------------------------------------
 
-# full_df <- read_csv("data/Screen_input.csv", col_types = cols("dir" = "c", "nrefs" = "i"))
-
-sheet <- "https://docs.google.com/spreadsheets/d/1boszwpnoQ-2stzg396kcM7eh0fibB2oA_voZEVw-rWs"
-
+sheet <- stop("Google sheets source not set (substitute url in place of this error message in code)")
+  
 full_df <- read_sheet(sheet, sheet = "Updated confs")
 
 progress <- read_sheet(sheet, sheet = "Progress")
